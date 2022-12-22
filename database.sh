@@ -31,31 +31,14 @@ do
             if [ -e $name ];then  # lw mwgod
                 echo "Error, already exist"
             else
-               
-                case $name in 
-                +([a-z]) )
+                    
+                if [[ $name =~ ^[a-zA-Z]+[a-zA-Z_0-9]+$ ]] ; then 
                     mkdir $name
                     echo $name "is created successfully"
                     # pwd
-                ;;
-                +([A-Z]) ) 
-                    mkdir $name
-                    echo $name "is created successfully"
-                   
-                ;;
-                +([a-zA-Z]) ) 
-                    mkdir $name
-                    echo $name "is created successfully"
-                   
-                ;;
-                +([_a-z_A-Z]) ) 
-
-                    mkdir $name
-                    echo $name "is created successfully"
-                ;;
-                * )
-                echo "Invalid database name "
-                esac                
+                else
+                   echo "Invalid database name "
+                fi        
     
             fi 
 
@@ -63,12 +46,12 @@ do
         ConnectDB )
                 read -p "Enter Name of DB you want to connect : " name 
                 if [ -d $name ] ; then 
+                    echo "DataBase exists "
                     cd $name 
                     pwd
-                    cd ..
-                    echo "DataBase exists "
-                    echo "Welcome from " $name " ,you can"
-                    
+                    # cd ..
+                    echo "Welcome from " $name "you can"
+                    source table.sh
                 else 
                   echo "Sorry DataBase is not exist"
                 fi
