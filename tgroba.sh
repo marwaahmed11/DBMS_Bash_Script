@@ -1,70 +1,17 @@
-
-CreateTable ()
-{
-    echo 'create table'
-}
-ListTable()
-{
-    echo 'list tables'
-}
-DropTable ()
-{
-    echo 'drop table '
-}
-InsertInTable ()
-{
-    echo 'insert'
-}
-UpdateTable()
-{
-    echo 'update '
-}
-SelectFromTable ()
-{
-    echo 'select '
-}
-DeleteFromTable ()
-{
-    echo 'ldelete'
-}
-MainMenu ()
-{
-    echo 'Welcome back to main menu'
-}
-select i in  "Create Table" "List Table"  "Drop Table" "Insert In To Table" "Select From Table" "Delete From Table" "Update Table"  "Main Menu" exit
-do 
-    case $i in 
-    
-        "Create Table" ) 
-            CreateTable
-        ;;
-        "List Table"  )
-            ListTable       
-        ;;
-        "Drop Table" ) 
-            DropTable
-        ;;
-        "Insert In To Table") 
-           InsertInTable
-        ;;
-        "Select From Table" ) 
-           SelectFromTable
-        ;;
-         "Delete From Table" ) 
-           DeleteFromTable 
-        ;;
-        "Update Table")
-            UpdateTable                 
-        ;;
-        "Main Menu")
-            MainMenu       
-        ;;
-        exit ) 
-           break
-        ;;
-    esac
-done
+#!/usr/bin/bash
 
 
+head -1 metadata | tr ":" "" |wc -w => 4
+while (i<4)
+{
+
+head -1 metadata | cut -d: -f $i 
 
 
+((i=$i+1)
+}
+
+
+read 'enter number' i
+
+cut -d : -f $i
