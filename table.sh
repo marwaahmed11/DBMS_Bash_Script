@@ -152,7 +152,69 @@ InsertInTable ()
 }
 UpdateTable()
 {
+
     echo 'update '
+    read -p "Enter Name of Table you want to update in: " table_name
+    if [[ -e $table_name  ]] ; then 
+          echo "Column Names"
+          i=1
+          num_of_fields=`head -1 "$table_name metadata" | tr ':' ' ' | wc -w`
+          
+          while (( $i <= $num_of_fields ))
+          do
+            columnName=`head -1 "$table_name metadata"| cut -d: -f $i `
+            echo $i"-" $columnName 
+
+            ((i=$i+1))
+          done  
+          read -p "Enter the number of column you want to update: " num
+          column_type=`tail -1 "$table_name metadata" | cut -d: -f $num`
+          read -p "Enter the word you want to update: " old
+          if [[ $column_type == "string" ]] ; then
+            if [[ $old =~ [a-zA-Z] ]] ; then 
+              if (( `awk -F : 'BEGIN{ count=0 }{ if ( $'$num' == "'$old'" ){ count++ } } END { print count}' $table_name` > 0 )) ; then
+                     read -p "Enter the new word : " new
+                     if [[ $new =~ [a-zA-Z] ]] ; then 
+                        sed -i 's/'$old'/'$new'/g' $table_name
+                     else
+                       echo "Data type not matched"
+                     fi
+                     
+                 else
+                   echo "Word doesn't exist in the column"
+                 fi
+               
+              else
+                echo "datatype must be string"
+              fi
+          else
+            if [[ $column_type == "int" ]] ; then
+                if [[ $old =~ [0-9] ]] ; then 
+                  if (( `awk -F : 'BEGIN{ count=0 }{ if ( $'$num' == "'$old'" ){ count++ } } END { print count}' $table_name` > 0 )) ; then
+                     read -p "Enter the new word : " new
+                      if [[ $new =~ [0-9] ]] ; then 
+                        sed -i 's/'$old'/'$new'/g' $table_name
+                     else
+                       echo "Data type not matched"
+                     fi
+
+                    
+                  else
+                   echo "Word doesn't exist in the column"
+                 fi
+                else
+                   echo "datatype must be int"
+                fi
+               
+            else
+               echo "Invalid data type not int or string"
+            fi
+             
+          fi
+    else
+      echo "Error,this table doesn't exist"
+    fi
+    
 }
 SelectFromTable ()
 {
