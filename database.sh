@@ -1,13 +1,13 @@
 export LC_COLLATE=C
 shopt -s extglob
 
-if [ -e "Database" ];then  # lw mwgod
+if [ -e "Database" ];then  
 
     echo "Database is already exist " 
     echo "----------------------------"
     cd Database
    
-else  #lw msh mwgod 
+else  
 
    mkdir ./Database
    cd Database
@@ -28,19 +28,24 @@ do
 
             read -p "Enter Name of DB : " name 
         
-            if [ -e $name ];then  # lw mwgod
-                echo "Error, already exist"
+            if [[ -e $name ]] ; then 
+                echo "Error, Database already exists" 
             else
-                    
-                if [[ $name =~ ^[a-zA-Z]+[a-zA-Z_0-9]+$ ]] ; then 
+               if [[ -z $name ]] ; then 
+                 echo "Error,Database name can't be empty"
+                 
+               else
+                   if [[ $name =~ ^[a-zA-Z]+[a-zA-Z_0-9]+$ ]] ; then 
                     mkdir $name
                     echo $name "is created successfully"
                     # pwd
-                else
+                   else
                    echo "Invalid database name "
-                fi        
-    
+                  
+                   fi       
+               fi
             fi 
+           
 
         ;;
         ConnectDB )
@@ -50,35 +55,42 @@ do
                     cd $name 
                     pwd
                     # cd ..
-                    echo "Welcome from " $name "you can"
+                    echo "Welcome from " $name 
+                    echo '----------------------'
                     source table.sh
                 else 
                   echo "Sorry DataBase is not exist"
                 fi
-                # h7ot select tany 
-                # hnft7 menu 3shan create,update,delete table ---
         ;;
         ListDB ) 
             ls -F | grep "/"
         ;;
         DropDB )
-
-                read -p "Enter Name of DB you want to drop: " name 
-                if [ -e $name ];then  # lw mwgod
-                    rm -r $name
-                    echo $name "is dropped successfully"
+                
+                read -p "Enter Name of DB you want to drop: " name  #check regex hereeeeeeeeeeeeeeeeeeeee "student meta"
+                if [[ -z $name ]] ; then
+                  echo "Error,DatabaseName is Empty."
                 else
-    
-                    echo $name "is not found"
+                    if [[ -e $name ]];then 
+                        rm -r $name
+                        echo $name "is dropped successfully"
+                    else
+        
+                        echo $name "is not found"
 
-                fi 
+                    fi   
+                fi
             
         ;;
         exit ) 
-           break
+          exit
+        ;;
+        * )
+        echo "Choose from Menu List"
         ;;
     esac
 done
+
 
 
 
